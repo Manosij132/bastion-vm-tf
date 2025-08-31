@@ -1,0 +1,31 @@
+name: bastion pipeline
+
+on: workflow_dispatch
+
+jobs:
+  terraform_job:
+    runs-on: bastionrunner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+    
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+      
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+      - name: Terraform Init
+        run: terraform init
+      
+      - name: Terraform Plan
+        run: terraform plan
+      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+     
+          
+
+                
