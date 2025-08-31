@@ -9,6 +9,7 @@ permissions:
 jobs:
   terraform_job:
     runs-on: bastionrunner
+    environment: dev
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
@@ -17,13 +18,13 @@ jobs:
         uses: Azure/login@v2.3.0
         with:
           # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          # creds: ${{ secrets.AZURE_CREDENTIALS }}
           # # ClientId of the Azure Service principal created.
-          # client-id: # optional
+          client-id: "c3d8d706-c998-4bca-9647-39fa685bc403"
           # # TenantId of the Azure Service principal created.
-          # tenant-id: # optional
+          tenant-id: "25da0254-8640-4e13-9016-d3428661a477"
           # # Azure subscriptionId
-          # subscription-id: # optional
+          subscription-id: "972b29e5-b4b2-4f43-b814-02879737840d"
           # # Set this value to true to enable Azure PowerShell Login in addition to Azure CLI login
           # enable-AzPSSession: # optional
           # # Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud
