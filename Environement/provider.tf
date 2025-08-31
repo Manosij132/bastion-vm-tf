@@ -6,8 +6,8 @@ terraform {
     }
   }
    backend "azurerm" {
-    resource_group_name  = "rgfortfstatemano"          
-    storage_account_name = "stgtfstatemano"        
+    resource_group_name  = "rg-tfstateMano"          
+    storage_account_name = "stgtfmano"        
    container_name       = "tfstate"                    
     key                  = "prod.terraform.tfstate"             
   }
