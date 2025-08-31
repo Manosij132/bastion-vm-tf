@@ -18,16 +18,16 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
   
       - name: Terraform Init
-        working-directory: ${{ github.workspace }}\Environement
+        working-directory: Environement
         run: terraform init
       
       - name: Terraform Plan
-        working-directory: ${{ github.workspace }}\Environement
+        working-directory: Environement
         run: terraform plan
       
-      - name: Terraform Apply
-        working-directory: ${{ github.workspace }}\Environement
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+      #   working-directory: Environement
+      #   run: terraform apply -auto-approve
      
           
 
