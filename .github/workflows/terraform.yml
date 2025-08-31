@@ -1,40 +1,70 @@
-name: bastion pipeline
+name: "Infra Pipeline Kuch Bhi"
 
 on: workflow_dispatch
 
 permissions:
   id-token: write
   contents: read
-
-jobs:
-  terraform_job:
-    runs-on: bastionrunner
-    steps:
+  
+jobs: 
+  terraform-init-plan:
+    runs-on: self-hosted
+    steps: 
       - name: Checkout
         uses: actions/checkout@v5.0.0
     
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.3
-      
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
           client-id: 1b4ba9c4-0b81-4591-a48c-5394e674a29e
           tenant-id: 25da0254-8640-4e13-9016-d3428661a477
-          subscription-id: 972b29e5-b4b2-4f43-b814-02879737840d
-                
+          subscription-id: 972b29e5-b4b2-4f43-b814-02879737840d  
+            
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: Environement
+        
       - name: Terraform Init
-        run: terraform init
-        working-directory: "${{ github.workspace }}/Environement"
-      
-      # - name: Terraform Plan
-      #   working-directory: Environement
-      #   run: terraform plan
-      
-      # - name: Terraform Apply
-      #   working-directory: Environement
-      #   run: terraform apply -auto-approve
-     
-          
+        id: init
+        run: terraform init -input=false  
+        working-directory: Environement
 
-                
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: Environement      
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+        working-directory: Environement 
+        
+  # terraform-apply:    
+  #   runs-on: self-hosted
+  #   needs: terraform-init-plan
+  #   environment: dev
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v5.0.0
+    
+  #     - name: Azure Login
+  #       uses: Azure/login@v2.3.0
+  #       with:
+  #         client-id: 1b4ba9c4-0b81-4591-a48c-5394e674a29e
+  #         tenant-id: 25da0254-8640-4e13-9016-d3428661a477
+  #         subscription-id: 972b29e5-b4b2-4f43-b814-02879737840d  
+          
+  #     - name: Terraform Init
+  #       id: init
+  #       run: terraform init -input=false  
+  #       working-directory: Environement
+
+  #     - name: Terraform Apply
+  #       id: apply
+  #       run: terraform apply --auto-approve
+  #       continue-on-error: true
+  #       working-directory: Environement              
+          
