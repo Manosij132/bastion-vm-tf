@@ -25,7 +25,7 @@ jobs:
                 
       - name: Terraform Init
         run: terraform init
-        working-directory: Environement
+        working-directory: "${{ github.workspace }}/Environement"
       
       # - name: Terraform Plan
       #   working-directory: Environement
